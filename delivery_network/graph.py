@@ -70,10 +70,11 @@ class Graph:
     
 
     def get_path_with_power(self, src, dest, power):
-        raise NotImplementedError
+   
     
 
     def connected_components(self):
+
         list_comp =[]
         nodes_visited = {node:False for node in self.nodes}
 
