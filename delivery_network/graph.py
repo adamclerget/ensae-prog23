@@ -74,7 +74,25 @@ class Graph:
     
 
     def connected_components(self):
-        raise NotImplementedError
+        list_comp =[]
+        nodes_visited = {node:False for node in self.nodes}
+
+        def dfs(node):
+            comp = [node]
+            for nei in self.graph[node]:
+                nei = nei[0]
+                if not nodes_visited[nei]:
+                    nodes_visited[nei]=True
+                    comp += dfs(nei)
+            return comp
+        for node in self.nodes :
+            if not nodes_visited[node]:
+                list_comp.append(dfs(node))
+        return list_comp
+
+            
+
+
 
 
     def connected_components_set(self):
@@ -82,6 +100,7 @@ class Graph:
         The result should be a set of frozensets (one per component), 
         For instance, for network01.in: {frozenset({1, 2, 3}), frozenset({4, 5, 6, 7})}
         """
+
         return set(map(frozenset, self.connected_components()))
     
     def min_power(self, src, dest):
