@@ -68,8 +68,20 @@ class Graph:
         self.graph[node2].append((node1, power_min, dist))
         self.nb_edges += 1
     
-
     def get_path_with_power(self, src, dest, power):
+        nodes_visited = {node: False for node in self.nodes}
+
+        def dfs(node):
+            if node == dest:
+                return [node]
+            for nei, p, _ in self.graph[node]:
+                if not nodes_visited[nei] and p <= power:
+                    nodes_visited[nei] = True
+                    d = dfs(nei)
+                    if d is not None:
+                        return [node] + d
+            return None
+        return dfs(src)
    
     
 
