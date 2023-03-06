@@ -157,3 +157,20 @@ def graph_from_file(filename):
             else:
                 raise Exception("Format incorrect")
     return g
+
+def min_power(self, src, dest):
+    liste = []
+    for n in self.node:
+        for i in self.graph[n]:
+            liste += i[1]
+    M = max(liste)
+    a = self.get_path_with_power(self, src, dest, M)
+    if a is None:
+        return None
+    while a is not None:
+        M -= 1
+        a = self.get_path_with_power(self, src, dest, M)
+    p_min = M+1
+    path = self.get_path_with_power(self, src, dest, p_min)
+
+    return p_min, path
