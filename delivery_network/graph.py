@@ -182,3 +182,10 @@ print(a)
 #print(t1_stop - t1_start)
 
 
+def kruskal(graph):
+    arêtes = []
+    for i in graph.graph:
+        for n, p, d in graph.graph[i]:
+            arêtes.append((i, n, p))
+    arêtes_triées = sorted(arêtes, key=lambda a: a[2])
+
