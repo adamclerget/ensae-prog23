@@ -115,12 +115,23 @@ class Graph:
         """
 
         return set(map(frozenset, self.connected_components()))
-    
+
     def min_power(self, src, dest):
-        """
-        Should return path, min_power. 
-        """
-        raise NotImplementedError
+        liste = []
+        for n in self.nodes:
+            for i in self.graph[n]:
+                liste.append(i[1])
+        M = max(liste)
+        a = self.get_path_with_power(src, dest, M)
+        if a is None:
+            return None
+        while a is not None:
+            M -= 1
+            a = self.get_path_with_power(src, dest, M)
+        p_min = M+1
+        path = self.get_path_with_power(src, dest, p_min)
+
+        return p_min, path
 
 
 def graph_from_file(filename):
@@ -158,19 +169,16 @@ def graph_from_file(filename):
                 raise Exception("Format incorrect")
     return g
 
-def min_power(self, src, dest):
-    liste = []
-    for n in self.node:
-        for i in self.graph[n]:
-            liste += i[1]
-    M = max(liste)
-    a = self.get_path_with_power(self, src, dest, M)
-    if a is None:
-        return None
-    while a is not None:
-        M -= 1
-        a = self.get_path_with_power(self, src, dest, M)
-    p_min = M+1
-    path = self.get_path_with_power(self, src, dest, p_min)
 
-    return p_min, path
+
+
+#Question 10
+#from time import perf_counter
+#t1_start = perf_counter()
+g = graph_from_file("/home/onyxia/ensae-prog23/input/network.2.in")
+a = g.min_power(1, 2)
+#t1_stop = perf_counter()
+print(a)
+#print(t1_stop - t1_start)
+
+
