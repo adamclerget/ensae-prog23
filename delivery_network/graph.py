@@ -173,19 +173,80 @@ def graph_from_file(filename):
 
 
 #Question 10
-#from time import perf_counter
-#t1_start = perf_counter()
-g = graph_from_file("/home/onyxia/ensae-prog23/input/network.2.in")
+from time import perf_counter
+t1_start = perf_counter()
+g = graph_from_file("/home/onyxia/ensae-prog23/input/network.1.in")
 a = g.min_power(1, 2)
-#t1_stop = perf_counter()
+t1_stop = perf_counter()
 print(a)
-#print(t1_stop - t1_start)
+print(t1_stop - t1_start)
 
 
-def kruskal(graph):
+"""def kruskal(graph):
     arêtes = []
     for i in graph.graph:
         for n, p, d in graph.graph[i]:
             arêtes.append((i, n, p))
-    arêtes_triées = sorted(arêtes, key=lambda a: a[2])
+    arêtes_triées = sorted(arêtes, key=lambda a: a[2])"""
+
+
+
+class UnionFind:
+    """
+    A class representing a Union-Find data structure.
+    It is used to implement Kruskal's algorithm to find the minimum spanning tree of a graph.
+    """
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.rank = [0] * n
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x, y):
+        xroot, yroot = self.find(x), self.find(y)
+        if xroot == yroot:
+            return
+        if self.rank[xroot] < self.rank[yroot]:
+            xroot, yroot = yroot, xroot
+        self.parent[yroot] = xroot
+        if self.rank[xroot] == self.rank[yroot]:
+            self.rank[xroot] += 1
+
+
+def kruskal(g):
+        # Sort edges by weight
+        edges = []
+        aretes = []
+
+        for i in g.graph:
+            for n, p, d in g.graph[i]:
+                aretes.append((p, i, n))
+        edges = sorted(aretes, key=lambda a: a[0])
+
+        # Initialize UnionFind
+        uf = UnionFind(g.nb_nodes)
+
+        # Create minimum spanning tree
+        mst = Graph()
+        for weight, node1, node2 in edges:
+            if uf.find(node1) != uf.find(node2):
+                mst.add_edge(node1, node2, weight)
+                uf.union(node1, node2)
+
+        return mst
+
+
+g=Graph([0,1,2,3,4,5,6])
+g.add_edge(1, 2, 8)
+g.add_edge(2,3,5)
+g.add_edge(3,4,3)
+g.add_edge(2,4,2)
+g.add_edge(5,6,2)
+
+print(g)
+
+print(kruskal(g))
 
