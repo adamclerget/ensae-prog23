@@ -217,36 +217,59 @@ class UnionFind:
 
 
 def kruskal(g):
-        # Sort edges by weight
-        edges = []
-        aretes = []
+    # Sort edges by weight
+    sorted_edges = []
+    edges = []
 
-        for i in g.graph:
-            for n, p, d in g.graph[i]:
-                aretes.append((p, i, n))
-        edges = sorted(aretes, key=lambda a: a[0])
+    for i in g.graph:
+        for n, p, d in g.graph[i]:
+            edges.append((p, i, n))
+    sorted_edges = sorted(edges, key=lambda a: a[0])
 
-        # Initialize UnionFind
-        uf = UnionFind(g.nb_nodes)
+    # Initialize UnionFind
+    uf = UnionFind(g.nb_nodes + max(g.nodes))
 
-        # Create minimum spanning tree
-        mst = Graph()
-        for weight, node1, node2 in edges:
-            if uf.find(node1) != uf.find(node2):
-                mst.add_edge(node1, node2, weight)
-                uf.union(node1, node2)
+    # Create minimum spanning tree
+    mst = Graph()
+    for weight, node1, node2 in sorted_edges:
+        if uf.find(node1) != uf.find(node2):
+            mst.add_edge(node1, node2, weight)
+            uf.union(node1, node2)
 
-        return mst
+    return mst
 
+# Test de la fonction kruskal sur un graph que nous avons créé et dont nous avons trouvé la solution à la main
 
-g=Graph([0,1,2,3,4,5,6])
-g.add_edge(1, 2, 8)
-g.add_edge(2,3,5)
-g.add_edge(3,4,3)
-g.add_edge(2,4,2)
-g.add_edge(5,6,2)
+g=Graph([77, 88, 99, 10, 50, 103, 94])
+g.add_edge(99, 77, 100)
+g.add_edge(77, 88, 100)
+g.add_edge(88, 99, 200)
+g.add_edge(50, 103, 2)
+g.add_edge(10, 50, 3)
+g.add_edge(10, 103, 1)
+g.add_edge(10, 94, 3)
+g.add_edge(94, 103, 2)
 
 print(g)
-
 print(kruskal(g))
+# Résultat cohérent
 
+# Question 14
+
+def min_power_mst(graph, src, dest) :
+    a = kruskal(graph).min_power(src, dest)
+    return a
+
+# Test de la fonction min_power_mst avec le graph que nous avons créée :
+print(min_power_mst(g, 94, 50))
+
+# Le résultat est cohérent 
+
+# Question 15
+t1_start = perf_counter()
+g = graph_from_file("/home/onyxia/ensae-prog23/input/network.1.in")
+a = kruskal(graph_from_file("/home/onyxia/ensae-prog23/input/network.1.in")).min_power(1, 2)
+t1_stop = perf_counter()
+print(a)
+print('question 15')
+print(t1_stop - t1_start)
