@@ -2,7 +2,7 @@
 import sys 
 sys.path.append("delivery_network")
 
-from graph import graph_from_file, kruskal
+from graph import Graph,graph_from_file, kruskal, UnionFind
 import unittest   # The test framework
 
 class Test_MST(unittest.TestCase):

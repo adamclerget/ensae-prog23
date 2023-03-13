@@ -170,16 +170,28 @@ def graph_from_file(filename):
     return g
 
 
+def routes_from_file(filename):
+    with open(filename, "r") as file:
+        trajets = []
+        m = int(file.readline())
+        for _ in range(m):
+            src, dest, u = map(int,file.readline().split())
+            trajets.append((src, dest))
+    return trajets
+
 
 
 #Question 10
 from time import perf_counter
 t1_start = perf_counter()
-g = graph_from_file("/home/onyxia/ensae-prog23/input/network.1.in")
-a = g.min_power(1, 2)
+for j in range(1, 10):
+    g = graph_from_file("/home/onyxia/ensae-prog23/input/network.{}.in".format(j))
+    t = routes_from_file("/home/onyxia/ensae-prog23/input/routes.{}.in".format(j))
+    for i in range(5):
+        a = g.min_power(*t[i])
+        print(a)
 t1_stop = perf_counter()
-print(a)
-print(t1_stop - t1_start)
+print(float((t1_stop - t1_start)*float(len(t))))
 
 
 """def kruskal(graph):
