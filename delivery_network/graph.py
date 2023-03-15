@@ -1,3 +1,6 @@
+from time import perf_counter
+
+
 class Graph:
     """
     A class representing graphs as adjacency lists and implementing various algorithms on the graphs. Graphs in the class are not oriented. 
@@ -29,7 +32,6 @@ class Graph:
         self.nb_nodes = len(nodes)
         self.nb_edges = 0
     
-
     def __str__(self):
         """Prints the graph as a list of neighbors for each node (one per line)"""
         if not self.graph:
@@ -82,31 +84,24 @@ class Graph:
                         return [node] + d
             return None
         return dfs(src)
-   
     
-
     def connected_components(self):
 
-        list_comp =[]
-        nodes_visited = {node:False for node in self.nodes}
+        list_comp = []
+        nodes_visited = {node: False for node in self.nodes}
 
         def dfs(node):
             comp = [node]
             for nei in self.graph[node]:
                 nei = nei[0]
                 if not nodes_visited[nei]:
-                    nodes_visited[nei]=True
+                    nodes_visited[nei] = True
                     comp += dfs(nei)
             return comp
-        for node in self.nodes :
+        for node in self.nodes:
             if not nodes_visited[node]:
                 list_comp.append(dfs(node))
         return list_comp
-
-            
-
-
-
 
     def connected_components_set(self):
         """
@@ -161,7 +156,7 @@ def graph_from_file(filename):
             edge = list(map(int, file.readline().split()))
             if len(edge) == 3:
                 node1, node2, power_min = edge
-                g.add_edge(node1, node2, power_min) # will add dist=1 by default
+                g.add_edge(node1, node2, power_min)  # will add dist=1 by default
             elif len(edge) == 4:
                 node1, node2, power_min, dist = edge
                 g.add_edge(node1, node2, power_min, dist)
@@ -175,14 +170,12 @@ def routes_from_file(filename):
         trajets = []
         m = int(file.readline())
         for _ in range(m):
-            src, dest, u = map(int,file.readline().split())
+            src, dest, u = map(int, file.readline().split())
             trajets.append((src, dest))
     return trajets
 
 
-
-#Question 10
-from time import perf_counter
+# Question 10
 t1_start = perf_counter()
 for j in range(1, 10):
     g = graph_from_file("/home/onyxia/ensae-prog23/input/network.{}.in".format(j))
@@ -200,7 +193,6 @@ print(float((t1_stop - t1_start)*float(len(t))))
         for n, p, d in graph.graph[i]:
             arêtes.append((i, n, p))
     arêtes_triées = sorted(arêtes, key=lambda a: a[2])"""
-
 
 
 class UnionFind:
@@ -250,9 +242,10 @@ def kruskal(g):
 
     return mst
 
-# Test de la fonction kruskal sur un graph que nous avons créé et dont nous avons trouvé la solution à la main
 
-g=Graph([77, 88, 99, 10, 50, 103, 94])
+"""Test de la fonction kruskal sur un graph que nous avons créé et dont nous avons trouvé la solution à la main"""
+
+g = Graph([77, 88, 99, 10, 50, 103, 94])
 g.add_edge(99, 77, 100)
 g.add_edge(77, 88, 100)
 g.add_edge(88, 99, 200)
@@ -268,9 +261,11 @@ print(kruskal(g))
 
 # Question 14
 
+
 def min_power_mst(graph, src, dest) :
     a = kruskal(graph).min_power(src, dest)
     return a
+
 
 # Test de la fonction min_power_mst avec le graph que nous avons créée :
 print(min_power_mst(g, 94, 50))
@@ -278,10 +273,13 @@ print(min_power_mst(g, 94, 50))
 # Le résultat est cohérent 
 
 # Question 15
+
 t1_start = perf_counter()
-g = graph_from_file("/home/onyxia/ensae-prog23/input/network.1.in")
-a = kruskal(graph_from_file("/home/onyxia/ensae-prog23/input/network.1.in")).min_power(1, 2)
+for j in range(1, 10):
+    g = graph_from_file("/home/onyxia/ensae-prog23/input/network.{}.in".format(j))
+    t = routes_from_file("/home/onyxia/ensae-prog23/input/routes.{}.in".format(j))
+    for i in range(5):
+        a = g.min_power_mst(*t[i])
+        print(a)
 t1_stop = perf_counter()
-print(a)
-print('question 15')
-print(t1_stop - t1_start)
+print(float((t1_stop - t1_start)*float(len(t))))
