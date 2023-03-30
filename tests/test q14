@@ -1,0 +1,22 @@
+from time import perf_counter
+
+import sys 
+sys.path.append("delivery_network")
+
+from graph import Graph, graph_from_file, kruskal, UnionFind, routes_from_file, min_power_mst
+
+
+"""Test de la fonction kruskal sur un graph que nous avons créé et dont nous avons trouvé la solution à la main"""
+g = Graph([77, 88, 99, 10, 50, 103, 94])
+g.add_edge(99, 77, 100)
+g.add_edge(77, 88, 100)
+g.add_edge(88, 99, 200)
+g.add_edge(50, 103, 2)
+g.add_edge(10, 50, 3)
+g.add_edge(10, 103, 1)
+g.add_edge(10, 94, 3)
+g.add_edge(94, 103, 2)
+
+print(min_power_mst(g, 94, 50))
+
+# Le résultat est cohérent

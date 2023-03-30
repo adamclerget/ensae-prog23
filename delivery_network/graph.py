@@ -175,26 +175,6 @@ def routes_from_file(filename):
     return trajets
 
 
-# Question 10
-t1_start = perf_counter()
-for j in range(1, 10):
-    g = graph_from_file("/home/onyxia/ensae-prog23/input/network.{}.in".format(j))
-    t = routes_from_file("/home/onyxia/ensae-prog23/input/routes.{}.in".format(j))
-    for i in range(5):
-        a = g.min_power(*t[i])
-        print(a)
-t1_stop = perf_counter()
-print(float((t1_stop - t1_start)*float(len(t))))
-
-
-"""def kruskal(graph):
-    arêtes = []
-    for i in graph.graph:
-        for n, p, d in graph.graph[i]:
-            arêtes.append((i, n, p))
-    arêtes_triées = sorted(arêtes, key=lambda a: a[2])"""
-
-
 class UnionFind:
     """
     A class representing a Union-Find data structure.
@@ -219,6 +199,12 @@ class UnionFind:
         if self.rank[xroot] == self.rank[yroot]:
             self.rank[xroot] += 1
 
+    """def union(self, x, y):
+        xroot, yroot = self.find(x), self.find(y)
+        if xroot == yroot:
+            return
+        else:
+            self.parent[x] = self.parent[y]"""
 
 def kruskal(g):
     # Sort edges by weight
@@ -231,7 +217,7 @@ def kruskal(g):
     sorted_edges = sorted(edges, key=lambda a: a[0])
 
     # Initialize UnionFind
-    uf = UnionFind(g.nb_nodes + max(g.nodes))
+    uf = UnionFind(1 + max(g.nodes))
 
     # Create minimum spanning tree
     mst = Graph()
@@ -243,43 +229,6 @@ def kruskal(g):
     return mst
 
 
-"""Test de la fonction kruskal sur un graph que nous avons créé et dont nous avons trouvé la solution à la main"""
-
-g = Graph([77, 88, 99, 10, 50, 103, 94])
-g.add_edge(99, 77, 100)
-g.add_edge(77, 88, 100)
-g.add_edge(88, 99, 200)
-g.add_edge(50, 103, 2)
-g.add_edge(10, 50, 3)
-g.add_edge(10, 103, 1)
-g.add_edge(10, 94, 3)
-g.add_edge(94, 103, 2)
-
-print(g)
-print(kruskal(g))
-# Résultat cohérent
-
-# Question 14
-
-
-def min_power_mst(graph, src, dest) :
+def min_power_mst(graph, src, dest):
     a = kruskal(graph).min_power(src, dest)
     return a
-
-
-# Test de la fonction min_power_mst avec le graph que nous avons créée :
-print(min_power_mst(g, 94, 50))
-
-# Le résultat est cohérent 
-
-# Question 15
-
-t1_start = perf_counter()
-for j in range(1, 10):
-    g = graph_from_file("/home/onyxia/ensae-prog23/input/network.{}.in".format(j))
-    t = routes_from_file("/home/onyxia/ensae-prog23/input/routes.{}.in".format(j))
-    for i in range(5):
-        a = g.min_power_mst(*t[i])
-        print(a)
-t1_stop = perf_counter()
-print(float((t1_stop - t1_start)*float(len(t))))
