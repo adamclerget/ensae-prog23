@@ -235,7 +235,7 @@ def min_power_mst(graph, src, dest):
     power = 0
 
     def get_depth(graph, root):
-        depths = {node: (None, None) for node in graph.nodes}  #saving the depth and the father of each node in the tree
+        depths = {node: (None, None, None) for node in graph.nodes}  #saving the depth and the father of each node in the tree
         depths[root][0] = 0
 
         def dfs(node, depth):
@@ -244,17 +244,20 @@ def min_power_mst(graph, src, dest):
                 if depths[nei][0] is None:
                     dfs(nei, depth + 1)
                     depths[nei][1] = node
+                    depths[nei][2] = p
         dfs(root, 0)
         return depths
     d = get_depth(a, a.nodes[0])
     if d[src][0] < d[dest][0]:
         while d[src][0] != d[dest][0]:
             path.append(src)
+            power = max(d[src][2],power)
             src = d[src][1]
     else:
         while d[src][0] != d[dest][0]:
             path.append(dest)
+            power = max(d[dest][2], power)
             dest = d[dest][1]
     while 
 
-    return a
+    return path, power
