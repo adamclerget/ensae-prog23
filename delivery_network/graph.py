@@ -230,5 +230,31 @@ def kruskal(g):
 
 
 def min_power_mst(graph, src, dest):
-    a = kruskal(graph).min_power(src, dest)
+    a = kruskal(graph)
+    path = []
+    power = 0
+
+    def get_depth(graph, root):
+        depths = {node: (None, None) for node in graph.nodes}  #saving the depth and the father of each node in the tree
+        depths[root][0] = 0
+
+        def dfs(node, depth):
+            depths[node][0] = depth
+            for nei, p, _ in graph.graph[node]:
+                if depths[nei][0] is None:
+                    dfs(nei, depth + 1)
+                    depths[nei][1] = node
+        dfs(root, 0)
+        return depths
+    d = get_depth(a, a.nodes[0])
+    if d[src][0] < d[dest][0]:
+        while d[src][0] != d[dest][0]:
+            path.append(src)
+            src = d[src][1]
+    else:
+        while d[src][0] != d[dest][0]:
+            path.append(dest)
+            dest = d[dest][1]
+    while 
+
     return a
