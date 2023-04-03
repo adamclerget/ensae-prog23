@@ -139,12 +139,12 @@ def graph_from_file(filename):
         The nodes (node1, node2) should be named 1..n
         All values are integers.
 
-    Parameters: 
+    Parameters:
     -----------
     filename: str
         The name of the file
 
-    Outputs: 
+    Outputs:
     -----------
     g: Graph
         An object of the class Graph with the graph from file_name.
@@ -206,6 +206,7 @@ class UnionFind:
         else:
             self.parent[x] = self.parent[y]"""
 
+
 def kruskal(g):
     # Sort edges by weight
     sorted_edges = []
@@ -231,7 +232,8 @@ def kruskal(g):
 
 def min_power_mst(graph, src, dest):
     a = kruskal(graph)
-    path = []
+    path1 = []
+    path2 = []
     power = 0
 
     def get_depth(graph, root):
@@ -248,16 +250,27 @@ def min_power_mst(graph, src, dest):
         dfs(root, 0)
         return depths
     d = get_depth(a, a.nodes[0])
-    if d[src][0] < d[dest][0]:
+    if d[src][0] < d[dest][0]:  #puts src and dest at the same depth and saves the traveled path
         while d[src][0] != d[dest][0]:
-            path.append(src)
-            power = max(d[src][2],power)
+            path1.append(src)
+            power = max(d[src][2], power)
             src = d[src][1]
     else:
         while d[src][0] != d[dest][0]:
-            path.append(dest)
+            path2.append(dest)
             power = max(d[dest][2], power)
             dest = d[dest][1]
-    while 
 
-    return path, power
+    def join(x, y):  # recursively fills the path from src and dest to their nearer common ancestor
+        path1.append(x)
+        path2.append(y)
+        if d[x][1] == d[y][1]:
+            path1.append(d[x][1])
+            power = max(power, d[x][2])
+        else:
+            power = max(power, d[y][2], d[x][2])
+            join(d[x][1], d[y][1])
+    join(src, dest)
+    path2.reverse()
+    finalpath = path1 + path2
+    return finalpath, power
