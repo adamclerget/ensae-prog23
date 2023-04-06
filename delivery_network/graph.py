@@ -185,7 +185,6 @@ class UnionFind:
     """
     def __init__(self, n):
         self.parent = list(range(n))
-        self.rank = [0] * n
 
     def find(self, x):
         if self.parent[x] != x:
@@ -196,18 +195,8 @@ class UnionFind:
         xroot, yroot = self.find(x), self.find(y)
         if xroot == yroot:
             return
-        if self.rank[xroot] < self.rank[yroot]:
-            xroot, yroot = yroot, xroot
-        self.parent[yroot] = xroot
-        if self.rank[xroot] == self.rank[yroot]:
-            self.rank[xroot] += 1
-
-    """def union(self, x, y):
-        xroot, yroot = self.find(x), self.find(y)
-        if xroot == yroot:
-            return
         else:
-            self.parent[x] = self.parent[y]"""
+            self.parent[x] = self.parent[y]
 
 
 def kruskal(g):
