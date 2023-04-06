@@ -116,18 +116,21 @@ class Graph:
         for n in self.nodes:
             for i in self.graph[n]:
                 liste.append(i[1])
-        M = max(liste)
-        a = self.get_path_with_power(src, dest, M)
-        if a is None:
-            return None
-        while a is not None:
-            M -= 1
-            a = self.get_path_with_power(src, dest, M)
-        p_min = M+1
+        liste.sort()
+        liste.reverse()
+
+        def sorting(list):
+            if self.get_path_with_power(src, dest, list[0]) is None:
+                return None
+            for i in range(len(list)):
+                a = self.get_path_with_power(src, dest, list[i])
+                if a is None:
+                    return list[i-1]
+
+        p_min = sorting(liste)
         path = self.get_path_with_power(src, dest, p_min)
 
         return p_min, path
-
 
 def graph_from_file(filename):
     """
